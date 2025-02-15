@@ -1,12 +1,25 @@
-import React from 'react'
-import FoodCard from "./FoodCard"
+import React from "react";
+import FoodCard from "./FoodCard";
+import FoodData from "../data/FoodData.js";
 
 const FoodItems = () => {
   return (
-    <div className='py-3 mx-6'>
-        <FoodCard />
+    <div className="flex flex-wrap justify-center gap-10 lg:justify-start mx-6 mb-10">
+      {FoodData.map((food) => {
+        return (
+          <FoodCard
+            key={food.id}
+            id={food.id}
+            name={food.name}
+            price={food.price}
+            desc={food.desc}
+            rating={food.rating}
+            img={food.img}
+          />
+        );
+      })}
     </div>
-  )
-}
+  );
+};
 
-export default FoodItems
+export default FoodItems;

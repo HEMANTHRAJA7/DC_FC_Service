@@ -2,7 +2,7 @@ import React from "react";
 
 const CaregoryMenue = () => {
   return (
-    <div className="ml-6">
+    <div className="ml-6 mb-6 flex flex-col justify-center items-center">
       <h3 className="text-xl font-semibold">Find the best food</h3>
       <div className="my-5 flex gap-3 flex-wrap">
         <button className="px-[1rem] py-[0.5rem] bg-[#F5EFFF] font-bold rounded-lg hover:bg-[#A294F9] hover:text-white">All</button>
