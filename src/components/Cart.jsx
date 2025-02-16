@@ -1,23 +1,26 @@
-import React from "react";
+import React, {useState} from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import ItemCard from "./ItemCard"
 import { useSelector } from "react-redux";
+import { CgShoppingCart } from "react-icons/cg";
 
 const Cart = () => {
 
-  const cart = selector((state)=> state.cart.cart)
+  const [activeCart, setActiveCart]= useState(false);
+  const cartItems = useSelector((state)=> state.cart.cart);
 
   return (
     <div>
-      <div className="fixed right-0 top-0 bg-[#F5EFFF] w-full lg:w-[20vw] h-full">
+      <div className={`fixed right-0 top-0 bg-[#F5EFFF] w-full lg:w-[20vw] h-full ${activeCart? "translate-x-0":"translate-x-full"} transition-all duration-500 ease-in-out z-50`}>
         <div className="flex justify-between items-center p-5">
           <span className="text-xl font-bold text-gray-800">Cart</span>
-          <AiOutlineClose className="text-xl border-2 rounded-md text-gray-600 border-gray-600 font-bold hover:text-red-300 hover:border-red-300" />
+          <AiOutlineClose onClick={()=> setActiveCart(!activeCart)} className="text-xl border-2 rounded-md text-gray-600 border-gray-600 font-bold hover:text-red-300 hover:border-red-300" />
         </div>
 
+        {cartItems.map((food)=>{
+          return <ItemCard key={food.id} id={food.id} name={food.name} price={food.price} img={food.img} qty={food.qty}/>
+        })}
 
-        <ItemCard />
-        <ItemCard />
 
         <div className="absolute bottom-0 p-5">
             <h3 className="font-semibold text-gray-800">Items: </h3>
@@ -27,10 +30,11 @@ const Cart = () => {
                 Place order
             </button>
         </div>
-
+       
         
 
       </div>
+      <CgShoppingCart onClick={() => setActiveCart(!activeCart)} className="text-7xl bg-[#A294F9] shadow-lg shadow-[#A294F9] p-3 rounded-3xl fixed bottom-5 right-5 text-white "/>
     </div>
   );
 };

@@ -23,7 +23,7 @@ const FoodCard = ({ id, name, price, desc, rating, img }) => {
           <FaStar className="text-yellow-400 mt-1 mr-1" /> {rating}
         </span>
         <button onClick={()=>{
-          dispatch(addToCart({id,name,price,rating, qty: 1}))
+          dispatch(addToCart({id,name,price,img, qty: 1}))
         }} className="bg-[#A294F9] text-white p-1.5 hover:bg-[#500073] rounded-lg cursor-pointer text-sm">
           Add to cart
         </button>
