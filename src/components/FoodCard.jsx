@@ -1,9 +1,9 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../redux/slices/CartSlice";
+import { addToCart } from "../redux/slices/CartSlice"; // a reducer imported from the cartSlice
 
-const FoodCard = ({ id, name, price, desc, rating, img }) => {
+const FoodCard = ({ id, name, price, desc, rating, img, handelToast }) => {
   const dispatch = useDispatch();
 
   return (
@@ -23,7 +23,7 @@ const FoodCard = ({ id, name, price, desc, rating, img }) => {
           <FaStar className="text-yellow-400 mt-1 mr-1" /> {rating}
         </span>
         <button onClick={()=>{
-          dispatch(addToCart({id,name,price,img, qty: 1}))
+          dispatch(addToCart({id,name,price,img, qty: 1})); handelToast(name);
         }} className="bg-[#A294F9] text-white p-1.5 hover:bg-[#500073] rounded-lg cursor-pointer text-sm">
           Add to cart
         </button>
