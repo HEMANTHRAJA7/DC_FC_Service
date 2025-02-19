@@ -2,6 +2,10 @@
 
 @import "tailwindcss";
 
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 * {
   font-family: "Poppins", serif;
   font-weight: 400;

@@ -12,7 +12,7 @@ const Navbar = () => {
         </h3>
         <h1 className="text-2xl font-bold">DC FC Service</h1>
       </div>
-      <div className="">
+      <div className="m-6">
         <input
           type="search"
           name="search"

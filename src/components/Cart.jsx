@@ -5,8 +5,8 @@ import { useSelector } from "react-redux"; // selector is used to get the states
 import { CgShoppingCart } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 
-const Cart = () => {
-  const [activeCart, setActiveCart] = useState(false);
+const Cart = ({ activeCart, setActiveCart }) => {
+  // const [activeCart, setActiveCart] = useState(false);
   const cartItems = useSelector((state) => state.cart.cart);
   const totalQty = cartItems.reduce((totalQty, item) => totalQty + item.qty, 0);
   const totalPrice = cartItems.reduce(
@@ -14,7 +14,7 @@ const Cart = () => {
     0
   );
 
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -31,24 +31,26 @@ const Cart = () => {
           />
         </div>
 
-        {cartItems.length > 0 ? (
-          cartItems.map((food) => {
-            return (
-              <ItemCard
-                key={food.id}
-                id={food.id}
-                name={food.name}
-                price={food.price}
-                img={food.img}
-                qty={food.qty}
-              />
-            );
-          })
-        ) : (
-          <h2 className="text-center text-xl text-gray-500">
-            Your cart is empty
-          </h2>
-        )}
+        <div className="overflow-y-auto scrollbar-hide max-h-[70vh] ">
+          {cartItems.length > 0 ? (
+            cartItems.map((food) => {
+              return (
+                <ItemCard
+                  key={food.id}
+                  id={food.id}
+                  name={food.name}
+                  price={food.price}
+                  img={food.img}
+                  qty={food.qty}
+                />
+              );
+            })
+          ) : (
+            <h2 className="text-center text-xl text-gray-500">
+              Your cart is empty
+            </h2>
+          )}
+        </div>
 
         <div className="absolute bottom-0 p-5">
           <h3 className="font-semibold text-gray-800">Items: {totalQty}</h3>
@@ -56,7 +58,10 @@ const Cart = () => {
             Total amount: {totalPrice}
           </h3>
           <hr className="w-[90vw] lg:w-[18vw] my-2" />
-          <button onClick={()=>navigate("/success")} className="bg-[#A294F9] text-white p-1.5 hover:bg-[#500073] px-3 py-2 mb-5 rounded-lg cursor-pointer font-bold w-[90vw] lg:w-[18vw]">
+          <button
+            onClick={() => navigate("/success")}
+            className="bg-[#A294F9] text-white p-1.5 hover:bg-[#500073] px-3 py-2 mb-5 rounded-lg cursor-pointer font-bold w-[90vw] lg:w-[18vw]"
+          >
             Place order
           </button>
         </div>
