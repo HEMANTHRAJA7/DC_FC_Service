@@ -3,6 +3,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import ItemCard from "./ItemCard";
 import { useSelector } from "react-redux"; // selector is used to get the states from the store
 import { CgShoppingCart } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const [activeCart, setActiveCart] = useState(false);
@@ -12,6 +13,8 @@ const Cart = () => {
     (totalPrice, item) => totalPrice + item.qty * item.price,
     0
   );
+
+  const navigate=useNavigate();
 
   return (
     <div>
@@ -53,7 +56,7 @@ const Cart = () => {
             Total amount: {totalPrice}
           </h3>
           <hr className="w-[90vw] lg:w-[18vw] my-2" />
-          <button className="bg-[#A294F9] text-white p-1.5 hover:bg-[#500073] px-3 py-2 mb-5 rounded-lg cursor-pointer font-bold w-[90vw] lg:w-[18vw]">
+          <button onClick={()=>navigate("/success")} className="bg-[#A294F9] text-white p-1.5 hover:bg-[#500073] px-3 py-2 mb-5 rounded-lg cursor-pointer font-bold w-[90vw] lg:w-[18vw]">
             Place order
           </button>
         </div>

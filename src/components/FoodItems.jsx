@@ -15,7 +15,7 @@ const FoodItems = () => {
       <div className="flex flex-wrap justify-center gap-10 lg:justify-start mx-6 mb-10">
         {FoodData.filter((food) => {
           if (category === "All") {
-            return food.name.toLowerCase().includes(search > toLowerCase());
+            return food.name.toLowerCase().includes(search.toLowerCase());
           } else {
             return (
               food.category === category &&
