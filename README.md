@@ -20,7 +20,7 @@ State Management: Redux Toolkit
 
 Clone the repository:
 
-git clone https://github.com/yourusername/dc-fc-service.git
+git clone https://github.com/yourusername/dc-fc-service.git](https://github.com/HEMANTHRAJA7/DC_FC_Service.git
 
 Navigate to the project directory:
 
@@ -42,4 +42,8 @@ Select your food items and add them to the cart.
 
 Proceed to checkout and place your order.
 
-Track your order status in real-time.
+Track your order status in real time.
+
+## Contact
+
+For any inquiries or feedback, feel free to reach out at hemanthraja72@gmail.com or open an issue in the repository.
