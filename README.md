@@ -16,23 +16,28 @@ Frontend: React, Redux, Tailwind CSS
 
 State Management: Redux Toolkit
 
-## Installation
+## Follow these steps to set up the project locally:
 
-Clone the repository:
-
+### 1️⃣ Clone the repository:
+```bash
 git clone https://github.com/HEMANTHRAJA7/DC_FC_Service.git
+```
 
-Navigate to the project directory:
-
+### 2️⃣ Navigate to the project directory:
+```bash
 cd Food-Court
+```
 
-Install dependencies:
-
+### 3️⃣ Install dependencies:
+```bash
 npm install
+```
 
-Start the development server:
-
+### 4️⃣ Start the development server:
+```bash
 npm run dev
+```
+
 
 ## Usage
 
