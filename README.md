@@ -20,7 +20,7 @@ State Management: Redux Toolkit
 
 Clone the repository:
 
-git clone https://github.com/yourusername/dc-fc-service.git](https://github.com/HEMANTHRAJA7/DC_FC_Service.git
+git clone https://github.com/HEMANTHRAJA7/DC_FC_Service.git
 
 Navigate to the project directory:
 
