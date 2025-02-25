@@ -25,7 +25,7 @@ git clone https://github.com/HEMANTHRAJA7/DC_FC_Service.git
 
 ### 2️⃣ Navigate to the project directory:
 ```bash
-cd Food-Court
+cd DC_FC_Service
 ```
 
 ### 3️⃣ Install dependencies:
