@@ -22,7 +22,7 @@ const CategoryMenu = () => {
   const selectedCategory = useSelector((state) => state.category.category);
   return (
     <div className="ml-6 mb-6 flex flex-col justify-center items-center">
-      <h3 className="text-xl font-semibold">Find the best food</h3>
+      <h3 className="text-xl font-semibold">A feast of flavours, crafted with care.</h3>
       <div className="my-5 flex gap-3 flex-wrap">
         <button
           onClick={() => dispatch(setCategory("All"))}
