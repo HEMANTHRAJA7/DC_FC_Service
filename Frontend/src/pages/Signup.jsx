@@ -12,9 +12,7 @@ const Signup = () => {
         e.preventDefault() //Prevents refresh of page when form is submitted
         await signup(email,password,username)
     }
-
     
-
     return(
         <form onSubmit={handleSubmit}>
             <h3>Signup</h3>
