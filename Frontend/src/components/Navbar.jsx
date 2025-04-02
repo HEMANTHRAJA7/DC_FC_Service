@@ -12,7 +12,6 @@ const Navbar = () => {
   }
   return (
     <nav className="flex flex-col lg:flex-row justify-between items-center py-3 mx-6 mb-7 ">
-      <button onClick={handleClick} className="px-4 py-2 bg-red-500 text-white rounded-lg">Logout</button>
       <div className="mb-5">
         <h3 className="text-xl font-bold text-gray-600">
           {new Date().toUTCString().slice(0, 16)}
@@ -29,6 +28,7 @@ const Navbar = () => {
           onChange={(e)=> dispatch(setSearch(e.target.value))}
           className="p-3 border border-gray-400 bg-[#F5EFFF] rounded-lg text-sm outline-none w-[90vw] lg:w-[25vw] "
         />
+        <button onClick={handleClick} className="mx-5 p-2 bg-[#A294F9] text-white p-1.5 hover:bg-[#500073] rounded-lg cursor-pointer text-lg">Logout</button>
       </div>
     </nav>
   );
