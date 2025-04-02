@@ -1,21 +1,65 @@
-import React, { useState } from "react";
+import { useState } from 'react';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { useSelector } from 'react-redux';
 import { AiOutlineClose } from "react-icons/ai";
 import ItemCard from "./ItemCard";
-import { useSelector } from "react-redux"; // selector is used to get the states from the store
 import { CgShoppingCart } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 
 const Cart = ({ activeCart, setActiveCart }) => {
-  // const [activeCart, setActiveCart] = useState(false);
+  const { user } = useAuthContext();
   const cartItems = useSelector((state) => state.cart.cart);
-  console.log(cartItems);
   const totalQty = cartItems.reduce((totalQty, item) => totalQty + item.qty, 0);
-  const totalPrice = cartItems.reduce(
-    (totalPrice, item) => totalPrice + item.qty * item.price,
-    0
-  );
-
+  const totalPrice = cartItems.reduce((totalPrice, item) => totalPrice + item.qty * item.price, 0);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!user) {
+      setError('You must be logged in');
+      return;
+    }
+
+    const foodOrder = {
+      food_item: cartItems.map(item => ({
+        name: item.name,
+        price: item.price,
+        quantity: item.qty
+      })),
+      No_of_items: totalQty,
+      Total_amount: totalPrice
+    };
+
+    try {
+      console.log("Sending data:", JSON.stringify(foodOrder, null, 2));
+      const response = await fetch('http://localhost:8000/food/', {
+        method: 'POST',
+        body: JSON.stringify(foodOrder),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
+
+      let json = {};
+      if (response.headers.get("Content-Type")?.includes("application/json")) {
+        json = await response.json();
+      }
+
+      if (!response.ok) {
+        console.error("Error from server:", json);
+        setError(json.error || "Failed to place order");
+      } else {
+        setError(null);
+        navigate("/success", { state: { cartItems } });
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+      setError("An error occurred while placing the order.");
+    }
+  };
 
   return (
     <div>
@@ -34,18 +78,16 @@ const Cart = ({ activeCart, setActiveCart }) => {
 
         <div className="overflow-y-auto scrollbar-hide max-h-[70vh] ">
           {cartItems.length > 0 ? (
-            cartItems.map((food) => {
-              return (
-                <ItemCard
-                  key={food.id}
-                  id={food.id}
-                  name={food.name}
-                  price={food.price}
-                  img={food.img}
-                  qty={food.qty}
-                />
-              );
-            })
+            cartItems.map((food) => (
+              <ItemCard
+                key={food.id}
+                id={food.id}
+                name={food.name}
+                price={food.price}
+                img={food.img}
+                qty={food.qty}
+              />
+            ))
           ) : (
             <h2 className="text-center text-xl text-gray-500">
               Your cart is empty
@@ -60,7 +102,7 @@ const Cart = ({ activeCart, setActiveCart }) => {
           </h3>
           <hr className="w-[90vw] lg:w-[18vw] my-2" />
           <button
-            onClick={() => navigate("/success", { state: { cartItems } })}
+            onClick={handleSubmit}
             className="bg-[#A294F9] text-white p-1.5 hover:bg-[#500073] px-3 py-2 mb-5 rounded-lg cursor-pointer font-bold w-[90vw] lg:w-[18vw]"
           >
             Place order
@@ -78,4 +120,3 @@ const Cart = ({ activeCart, setActiveCart }) => {
 };
 
 export default Cart;
-
