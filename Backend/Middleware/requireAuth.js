@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken')
-const User = require('../models/userModels')
+const User = require('../Models/userSchema')
 const requireAuth = async (req,res,next) => {
     //verify authentication
     const { authorization }=req.headers
-
+    // authorization = 'Bearer nkdsjnsdkgb.sfnkjnkngd.msfsjf'
     if(!authorization)
         return res.status(404).json({error:'Authorization token required'})
 

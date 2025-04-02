@@ -2,8 +2,10 @@ const food = require('../Models/foodSchema')
 const mongoose = require('mongoose')
 
 const getFood = async(req,res) =>{
+    const user_id = req.user._id
+
     try {
-        const Food = await food.find().sort({ createdAt: -1 });
+        const Food = await food.find({ user_id }).sort({ createdAt: -1 });
         res.status(200).json(Food);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -30,7 +32,8 @@ const createFoodOrder = async (req, res) => {
     }
     
     try {
-        const foodOrder = await food.create({ food_item, No_of_items, Total_amount });
+        const user_id = req.user._id
+        const foodOrder = await food.create({ food_item, No_of_items, Total_amount,user_id });
         res.status(200).json(foodOrder);
     } catch (error) {
         res.status(400).json({ error: error.message });

@@ -6,6 +6,7 @@ import ItemCard from "./ItemCard";
 import { CgShoppingCart } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 
+
 const Cart = ({ activeCart, setActiveCart }) => {
   const { user } = useAuthContext();
   const cartItems = useSelector((state) => state.cart.cart);
