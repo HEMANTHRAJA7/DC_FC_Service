@@ -28,7 +28,7 @@ const Navbar = () => {
           onChange={(e)=> dispatch(setSearch(e.target.value))}
           className="p-3 border border-gray-400 bg-[#F5EFFF] rounded-lg text-sm outline-none w-[90vw] lg:w-[25vw] "
         />
-        <button onClick={handleClick} className="mx-5 p-2 bg-[#A294F9] text-white p-1.5 hover:bg-[#500073] rounded-lg cursor-pointer text-lg">Logout</button>
+        <button onClick={handleClick} className="mx-5 p-2 bg-[#A294F9] text-white hover:bg-[#500073] rounded-lg cursor-pointer text-lg">Logout</button>
       </div>
     </nav>
   );
