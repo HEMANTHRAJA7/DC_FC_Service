@@ -12,90 +12,95 @@ const History = ({ activeHistory, setActiveHistory }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
-    const fetchDummyOrderHistory = () => {
-      setTimeout(() => {
-        const dummyOrders = [
-          {
-            _id: "ord612345",
-            food_item: [
-              {
-                name: "Margherita Pizza",
-                price: 299,
-                quantity: 2
-              },
-              {
-                name: "Garlic Bread",
-                price: 149,
-                quantity: 1
-              }
-            ],
-            No_of_items: 3,
-            Total_amount: 747,
-            user_id: "user123",
-            createdAt: "2025-04-05T14:23:11.000Z"
-          },
-          {
-            _id: "ord612346",
-            food_item: [
-              {
-                name: "Chicken Burger",
-                price: 199,
-                quantity: 1
-              },
-              {
-                name: "French Fries",
-                price: 99,
-                quantity: 1
-              },
-              {
-                name: "Cold Coffee",
-                price: 129,
-                quantity: 2
-              }
-            ],
-            No_of_items: 4,
-            Total_amount: 556,
-            user_id: "user123",
-            createdAt: "2025-04-01T18:45:22.000Z"
-          },
-          {
-            _id: "ord612347",
-            food_item: [
-              {
-                name: "Paneer Tikka",
-                price: 249,
-                quantity: 1
-              },
-              {
-                name: "Butter Naan",
-                price: 49,
-                quantity: 2
-              },
-              {
-                name: "Dal Makhani",
-                price: 199,
-                quantity: 1
-              }
-            ],
-            No_of_items: 4,
-            Total_amount: 546,
-            user_id: "user123",
-            createdAt: "2025-03-28T12:15:09.000Z"
-          }
-        ];
-        
-        setOrderHistory(dummyOrders);
+    const fetchOrderHistory = async () => {
+      setLoading(true);
+      setError(null);
+      
+      if (!user) {
+        setError("You must be logged in to view order history");
         setLoading(false);
-      }, 1000); 
+        return;
+      }
+
+      try {
+        // Using the correct API URL
+        const response = await fetch('http://localhost:8000/food/', {
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
+
+        // Check for non-JSON responses
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Received non-JSON response from server");
+        }
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to fetch order history');
+        }
+
+        const data = await response.json();
+        setOrderHistory(data);
+      } catch (err) {
+        console.error("Error fetching order history:", err);
+        setError(err.message || "Failed to load order history");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    if (activeHistory) {
-      fetchDummyOrderHistory();
+    if (activeHistory && user) {
+      fetchOrderHistory();
     }
-  }, [activeHistory]);
+  }, [activeHistory, user]);
 
-  const handleReorder = (order) => {
-    toast.success('Order placed successfully!');
+  const handleReorder = async (order) => {
+    if (!user) {
+      toast.error('You must be logged in to place an order');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8000/food/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: JSON.stringify({
+          food_item: order.food_item,
+          No_of_items: order.No_of_items,
+          Total_amount: order.Total_amount
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to place order');
+      }
+
+      toast.success('Order placed successfully!');
+      
+      // Refresh order history
+      setLoading(true);
+      const historyResponse = await fetch('http://localhost:8000/food/', {
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
+      
+      if (historyResponse.ok) {
+        const newData = await historyResponse.json();
+        setOrderHistory(newData);
+    
+      }
+      setLoading(false);
+    } catch (err) {
+      console.error("Reorder error:", err);
+      toast.error(err.message || 'Something went wrong');
+    }
   };
 
   const formatDate = (dateString) => {
@@ -134,7 +139,15 @@ const History = ({ activeHistory, setActiveHistory }) => {
               <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#A294F9]"></div>
             </div>
           ) : error ? (
-            <h2 className="text-center text-xl text-red-500 p-5">{error}</h2>
+            <div className="text-center p-5">
+              <h2 className="text-xl text-red-500">{error}</h2>
+              <button 
+                className="mt-3 bg-[#A294F9] text-white py-2 px-4 rounded-md hover:bg-[#500073]"
+                onClick={() => activeHistory && user && fetchOrderHistory()}
+              >
+                Try Again
+              </button>
+            </div>
           ) : orderHistory.length > 0 ? (
             orderHistory.map((order) => (
               <div key={order._id} className="m-4 bg-white rounded-lg shadow-md">
@@ -197,12 +210,12 @@ const History = ({ activeHistory, setActiveHistory }) => {
                         >
                           View Details
                         </button>
-                        <button
+                        {/* <button
                           className="flex-1 bg-[#A294F9] text-white py-1 rounded-md text-sm hover:bg-[#500073]"
                           onClick={() => handleReorder(order)}
                         >
                           Reorder
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   )}
@@ -217,10 +230,13 @@ const History = ({ activeHistory, setActiveHistory }) => {
         </div>
       </div>
       
-      <FaHistory
-        onClick={() => setActiveHistory(!activeHistory)}
-        className="text-7xl bg-[#A294F9] shadow-lg shadow-[#A294F9] p-3 rounded-3xl fixed bottom-5 right-25 text-white cursor-pointer"
-      />
+      {/* Fixed position history button */}
+      <div className="fixed bottom-5 right-5 z-40">
+        <FaHistory
+          onClick={() => setActiveHistory(!activeHistory)}
+          className="text-7xl bg-[#A294F9] shadow-lg shadow-[#A294F9] p-3 rounded-3xl fixed bottom-5 right-25 text-white"
+        />
+      </div>
     </div>
   );
 };
