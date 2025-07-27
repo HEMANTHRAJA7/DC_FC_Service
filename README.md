@@ -24,11 +24,11 @@ git clone https://github.com/HEMANTHRAJA7/DC_FC_Service
 cd DC_FC_Service
 
 # Install frontend dependencies
-cd frontend
+cd Frontend
 npm install
 npm run dev
 
 # Install backend dependencies
-cd backend
+cd Backend
 npm install
 nodemon server.js
